@@ -1,5 +1,3 @@
-#include <Windows.h>
-
 #include "ThreadPool.h"
 
 ThreadPool::ThreadPool(size_t num_threads) : _num_threads(num_threads), _stop_threads(false) {
@@ -28,6 +26,7 @@ ThreadPool::~ThreadPool() {
 
 //worker - thread model...
 //it should have mutex lock
+/*
 void ThreadPool::enqueue_task(std::function<void()>task) {
 	if (_stop_threads)
 	{
@@ -39,6 +38,7 @@ void ThreadPool::enqueue_task(std::function<void()>task) {
 	task_queue.push(task);
 	_m_job_queue.unlock();
 }
+*/
 
 void ThreadPool::worker() {
 	while (true) {
@@ -48,7 +48,7 @@ void ThreadPool::worker() {
 			_m_job_queue.unlock();
 			if (_stop_threads)
 				break;
-			Sleep(1000);
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 			continue;
 		}
 

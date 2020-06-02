@@ -1,9 +1,11 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <thread>
 #include <queue>
 #include <functional>
 #include <mutex>
+#include <future>
 
 //threadpool class.
 //Pattern : producer / consumer pattern
@@ -24,5 +26,7 @@ private:
 public:
 	ThreadPool(size_t num_threads);
 	~ThreadPool();
-	void enqueue_task(std::function<void()>task);
+
+	template <class F, class... Args>
+	std::future<typename std::result_of<F(Args...)>::type> enqueue_task(F&& f, Args&&... args);
 };
